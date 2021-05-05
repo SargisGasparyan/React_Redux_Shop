@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  &-content {
+    flex: 3 60rem;
+    border-right: 1px solid rgb(100, 97, 97);
+  }
+  &-sidebar {
+    flex: 1 20rem;
+  }
+}

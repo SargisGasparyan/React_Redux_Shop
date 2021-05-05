@@ -1,0 +1,25 @@
+.products {
+  display: flex;
+  flex-wrap: wrap;
+}
+.product {
+  height: 47rem;
+  padding: 1rem;
+  margin: 1rem;
+  &-image {
+    width: 25rem;
+    height: 30rem;
+  }
+  &-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    &-desc{
+      margin-bottom: 10px;
+    }
+    &-btn{
+      margin-top: 10px;
+    }
+  }
+}
