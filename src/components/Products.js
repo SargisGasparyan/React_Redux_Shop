@@ -3,9 +3,14 @@ import {Fade} from 'react-reveal'
 import {formatCurrency} from './util.js'
 import Zoom from 'react-reveal/Zoom'
 import Modal from 'react-modal'
+import { connect } from 'react-redux'
+import {fetchProducts,addProduct} from '../actions/productActions'
 
-const Products = ({data,addProduct}) => {
+const Products = ({addProduct,fetchProducts,products}) => {
     const [product,setProduct]=React.useState(null)
+    React.useEffect(()=>{
+        fetchProducts()
+    },[])
 
     const openModal=(product)=>{
         setProduct(product)
@@ -13,23 +18,26 @@ const Products = ({data,addProduct}) => {
     const closeModal=()=>{
         setProduct(null)
     }
-    return(
-       
-     <div className="products">
+    return(  
+     <div>
           <Fade bottom cascade>
-        {data.map((product)=>(
-        <div key={product._id} className='product'>
-            <a onClick={()=>openModal(product)}>
-            <img src={product.image} className='product-image'></img>
-            </a>
-            <div className='product-info'>
-                <h2 className='product-info-desc'>{product.description}</h2>
-                <p className='product-info-price'>{formatCurrency(product.price)}</p>
-                <p className='product-info-avail'>{product.availableSizes.slice(1, ).join(' -').split(" ")}</p>
-                <button className="product-info-btn" onClick={()=>addProduct(product)}>Add to cart</button>
-            </div>
-        </div>
-        ))}
+              {!products?(<div>LOADING...</div>):
+        (<div className="products">
+                {products.map((product)=>(
+                <div key={product._id} className='product'>
+                    <a onClick={()=>openModal(product)}>
+                    <img src={product.image} className='product-image'></img>
+                    </a>
+                    <div className='product-info'>
+                        <h2 className='product-info-desc'>{product.description}</h2>
+                        <p className='product-info-price'>{formatCurrency(product.price)}</p>
+                        <p className='product-info-avail'>{product.availableSizes.slice(1, ).join(' -').split(" ")}</p>
+                        <button className="product-info-btn" onClick={()=>addProduct(product)}>Add to cart</button>
+                    </div>
+                </div>
+                ))}
+        </div>)
+        }
          </Fade>
          {
                 product &&(
@@ -68,4 +76,4 @@ const Products = ({data,addProduct}) => {
     )
 
 }
-export default Products
+export default connect((state)=>({products:state.products.filteredItems}),{fetchProducts,addProduct})(Products)
